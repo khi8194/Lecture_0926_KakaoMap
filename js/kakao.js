@@ -7,10 +7,23 @@ const mapOptions = {
 	level: 3
 };
 
-const map = new kakao.maps.Map(mapContainer, mapOptions);
-const marker = new kakao.maps.Marker({ position: mapOptions.center });
+//스크립트가 처음 로드된 시점에 mapOption안에 포함되어 있는 위치값을 기준으로 지도 인스턴스가 생성되고 끝
+//이슈사항 : 지도 인스턴스가 처음 생성된 시점에서 위치값이 고정되어 있기 때문에 브라우저 리사이즈시 위치 중앙이 틀어짐
+//해결방법 : 브라우저 리사이즈 할때마다 지도 인스턴스를 다시 생성
+// const map = new kakao.maps.Map(mapContainer, mapOptions);
+// const marker = new kakao.maps.Marker({ position: mapOptions.center });
 
+//브라우저 리사이즈 될때마다 map변수에 변경된 값을 재반영해야 되므로 let 방식으로 변수 선언
+let map = new kakao.maps.Map(mapContainer, mapOptions);
+let marker = new kakao.maps.Marker({ position: mapOptions.center });
 marker.setMap(map);
+
+//브라우저 리사이즈 이벤트가 발생할때마다
+window.addEventListener("resize", () => {
+	//기존 map, marker 변수에 변경된 인스턴스 정보값을 덮어쓰기 처리
+	map = new kakao.maps.Map(mapContainer, mapOptions);
+	marker.setMap(map);
+});
 
 const mapTypeControl = new kakao.maps.MapTypeControl();
 map.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
