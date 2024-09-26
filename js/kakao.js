@@ -1,33 +1,21 @@
-/*
-new kakao.maps.LatLng(위도,경도) : 지도와 마커를 출력할 때 필요한 위치 인스턴스 반환
-new kakao.maps.Map(DOM, option) : 지도 인스턴스 반환
-new kakao.maps.Marker({position : 위치 인스턴스}) : 특정 위치에 생성되는 마커 인스턴스를 반환
-
-마커인스턴스.setMap(지도 인스턴스) : 기존 지도에 마커를 세팅해주는 함수
-*/
-
-//frame El
 const mapContainer = document.querySelector("#map");
 
-//map option (position instance, level)
 const mapOptions = {
 	center: new kakao.maps.LatLng(37.5803593, 127.0042622),
 	level: 3
 };
 
-//map instance
-const map = new kakao.maps.Map(mapContainer, mapOptions); //지도 인스턴스
-/*
-const markerPosition = new kakao.maps.LatLng(37.5803593, 127.0042622);
-const marker = new kakao.maps.Marker({
-	position: markerPosition
-});
-*/
-//marker instance
+const map = new kakao.maps.Map(mapContainer, mapOptions);
 const marker = new kakao.maps.Marker({ position: mapOptions.center });
 
-//binding marker
 marker.setMap(map);
 
-// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
-// marker.setMap(null);
+// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+//맵 위에 올릴 컨트롤 인스턴스 생성
+const mapTypeControl = new kakao.maps.MapTypeControl();
+
+// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+//타입컨트롤러의 위치값 지정하는 함수
+//위성지도 타입 변경 컨트롤러 추가 (BOTTOMRIGHT TOPLEFT TOPRIGHT)
+map.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
