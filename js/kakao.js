@@ -51,3 +51,12 @@ viewClient.getNearestPanoId(mapOptions.center, 50, panoId => {
 	//특정 좌표에서 반경 내 가장 가까운 로드뷰 파노라마 ID를 구한다 (50 : 반경(미터 단위))
 	view.setPanoId(panoId, mapOptions.center); //panoId와 중심좌표를 통해 로드뷰 실행
 });
+
+// 지도에 올릴 장소명 인포윈도우 입니다.
+//로드뷰에 마커 올리기
+kakao.maps.event.addListener(view, "init", () => {
+	new kakao.maps.Marker({
+		position: mapOptions.center, // 인포윈도우 내부에 들어갈 컨텐츠 입니다.
+		map: view //기존 마커생성과 동일하고 map부분에만 view 인스턴스 연결 	// 인포윈도우 내부에 들어갈 컨텐츠 입니다.
+	});
+});
