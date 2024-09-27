@@ -38,25 +38,41 @@ btnToggle.addEventListener("click", e => {
 	}
 });
 
-// 로드뷰 관련 roadview setting
+// roadview setting
 const viewContainer = document.querySelector("#view");
-const view = new kakao.maps.Roadview(viewContainer); //로드뷰 객체
-const viewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
-// var에서 const 변경하는 이유
-// 스크립트의 내용 미숙
-// 코드를 만들 때 api 문서를 이해하지 못한 상태로 ctrl+V햇구나 (오픈소스를 업데이트 하지 않은 상태로 옛날 코드 방치...)
+const view = new kakao.maps.Roadview(viewContainer);
+const viewClient = new kakao.maps.RoadviewClient();
+const btnViewToggle = document.querySelector(".viewToggle");
+// const figures = document.querySelector("frame>figure");
+const [mapEl, viewEl] = document.querySelectorAll(".frame > figure");
 
-// 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
 viewClient.getNearestPanoId(mapOptions.center, 50, panoId => {
-	//특정 좌표에서 반경 내 가장 가까운 로드뷰 파노라마 ID를 구한다 (50 : 반경(미터 단위))
-	view.setPanoId(panoId, mapOptions.center); //panoId와 중심좌표를 통해 로드뷰 실행
+	view.setPanoId(panoId, mapOptions.center);
 });
 
-// 지도에 올릴 장소명 인포윈도우 입니다.
 //로드뷰에 마커 올리기
 kakao.maps.event.addListener(view, "init", () => {
 	new kakao.maps.Marker({
-		position: mapOptions.center, // 인포윈도우 내부에 들어갈 컨텐츠 입니다.
-		map: view //기존 마커생성과 동일하고 map부분에만 view 인스턴스 연결 	// 인포윈도우 내부에 들어갈 컨텐츠 입니다.
+		position: mapOptions.center,
+		map: view //기존 마커생성과 동일하고 map부분에만 view 인스턴스 연결
 	});
+});
+//뷰토글 버튼 클릭시
+btnViewToggle.addEventListener("click", e => {
+	//자기 자신에 on클래스를 토글 처리
+	e.target.classList.toggle("on");
+
+	//현재 토글버튼에 on이 붙어있으면 view가 활성화 되어 있는 상태이기 때문에
+	if (e.target.classList.contains("on")) {
+		//버튼의 텍스트를 Roadview OFF라고 변경
+		e.target.innerText = "Roadview OFF";
+		//view 보임처리 , map 숨김처리
+		viewEl.classList.add("on");
+		mapEl.classList.remove("on");
+	} else {
+		//view 숨김처리 , map 보임처리
+		e.target.innerText = "Roadview ON";
+		viewEl.classList.remove("on");
+		mapEl.classList.add("on");
+	}
 });

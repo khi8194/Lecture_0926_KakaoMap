@@ -42,11 +42,17 @@ main{
       position: absolute;
       top: 0px;
       left: 0px;
-      display: none;
+      // display: none;
+      opacity: 0;
+      z-index: 1;
 
       &.on {
-        display: block;
+        // display: block;
+        opacity: 1;
+        z-index: 2;
       }
     }
   }
 }
+
+//미션 = viewToggle버튼 클릭시 frame 안쪽의 figure 요소에 on을 바꿔치기 하면서 토글 기능 적용 (10시 30분까지)
